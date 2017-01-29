@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>JobEnrollmentDemo</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <login-config>
+    <auth-method>FORM</auth-method>
+  </login-config>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Protected Area</web-resource-name>
+      <url-pattern>/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>Everyone</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Protected Area</web-resource-name>
+      <url-pattern>/AdminAccess</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>ADMIN</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <security-role>
+    <description>All SAP HANA Cloud Platform users</description>
+    <role-name>Everyone</role-name>
+  </security-role>
+  <security-role>
+    <description>Admin users</description>
+    <role-name>ADMIN</role-name>
+  </security-role>
+  <servlet>
+    <servlet-name>JPARefScenarioServlet</servlet-name>
+    <servlet-class>org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet</servlet-class>
+    <init-param>
+      <param-name>javax.ws.rs.Application</param-name>
+      <param-value>org.apache.olingo.odata2.core.rest.app.ODataApplication</param-value>
+    </init-param>
+    <init-param>
+      <param-name>org.apache.olingo.odata2.service.factory</param-name>
+      <param-value>com.sap.sdc.hcp.bootcamp.odata.ApplicationODataJPAServiceFactory</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>JPARefScenarioServlet</servlet-name>
+    <url-pattern>/odata.srv/*</url-pattern>
+  </servlet-mapping>
+  <resource-ref>
+    <res-ref-name>jdbc/DefaultDB</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+  </resource-ref>
+  <resource-ref>
+    <res-ref-name>FeedbackService</res-ref-name>
+    <res-type>com.sap.core.connectivity.api.http.HttpDestination</res-type>
+  </resource-ref>
+  <resource-ref>
+    <res-ref-name>EcmService</res-ref-name>
+    <res-type>com.sap.ecm.api.EcmService</res-type>
+  </resource-ref>
+  <resource-ref>
+    <res-ref-name>connectivity/DestinationFactory</res-ref-name>
+    <res-type>com.sap.core.connectivity.api.DestinationFactory</res-type>
+  </resource-ref>
+  <resource-ref>
+    <res-ref-name>connectivityConfiguration</res-ref-name>
+    <res-type>com.sap.core.connectivity.api.configuration.ConnectivityConfiguration</res-type>
+  </resource-ref>
+</web-app>
