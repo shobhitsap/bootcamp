@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <title>Feedback Application</title>
+
+    <script src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
+        id="sap-ui-bootstrap"
+        data-sap-ui-libs="sap.m, sap.ui.commons"
+        data-sap-ui-theme="sap_bluecrystal">
+    </script>
+
+    <script>
+   var ind= new Array();
+      var app = new sap.m.App({initialPage:"page1"});
+      var t1 = new sap.m.Text({text: "Please share your feedback on below mentioned points"});
+      
+      var t2 = new sap.m.Text({text: "OverAll Effectiveness"});
+       ind[0] = new sap.m.RatingIndicator({maxValue : 5, value : 0});
+  
+     var t3 = new sap.m.Text({text: "Expectation Management and Participant's Motivation "});
+       ind[1] = new sap.m.RatingIndicator({maxValue : 5, value : 0});
+      
+      var t4 = new sap.m.Text({text: "Course content,Structure and relevance "});
+        ind[2] = new sap.m.RatingIndicator({maxValue : 5, value : 0});
+      
+      var t5 = new sap.m.Text({text: "Trainer Performance "});
+       ind[3] = new sap.m.RatingIndicator({maxValue : 5, value : 0});  
+      
+       var t6 = new sap.m.Text({text: "Any other comments:"});
+       var textArea = new sap.m.TextArea({rows : 2, cols: 40});
+       
+             
+       
+
+      var sendBtn = new sap.m.Button({
+          text : "Send",
+          press : function() {
+        	  
+        	 
+        	// var JsonData=[];
+        	 var temp={};
+        	 var tmp ={};
+       			 tmp["text"]= textArea.getValue();
+       			tmp["rating0"]= ind[0].getValue();
+       			tmp["rating1"]= ind[1].getValue();
+       			tmp["rating2"]= ind[2].getValue();
+       			tmp["rating3"]= ind[3].getValue();
+       			tmp["page"]="page1";
+       			temp.temp=tmp;
+        	 
+       		//	JsonData.push(temp);
+       			try{
+       			    seen = [];
+
+       			var data=JSON.stringify(temp, function(key, val) {
+       			   if (val != null && typeof val == "object") {
+       			        if (seen.indexOf(val) >= 0) {
+       			            return;
+       			        }
+       			        seen.push(val);
+       			    }
+       			    return val;
+       			});
+       			
+       			}catch(e){
+       			    console.log(e);
+       			} 
+//         	  var data = {
+//         			  "text": textArea.getValue(),
+//         			  "rating": 
+//         			  "page": "page1"
+//         	  };
+
+        	  
+              $.ajax({
+            	  url: "https://jobenrollmentdemoi335136trial.hanatrial.ondemand.com/JobEnrollmentDemo/FeedbackServlet",
+            	  type: "POST",
+            	  data: 'JsonData='+data
+            	  }).done(function() {
+            	  jQuery.sap.require("sap.m.MessageToast");
+            	  sap.m.MessageToast.show("Thank you. Your feedback was accepted.");
+              }).fail(function() {
+            	  jQuery.sap.require("sap.m.MessageToast");
+            	  sap.m.MessageToast.show("Something went wrong plese try again later.");
+              });
+          }
+      });
+
+      var vbox = new sap.m.VBox({
+    	  fitContainer: true,
+    	  displayInline: false,
+    	  items: [t1, t2,ind[0],t3,ind[1],t4,ind[2],t5,ind[3],t6,textArea, sendBtn]
+      });
+
+      var page1 = new sap.m.Page("page1", {
+          title: "Feedback Application",
+          content : vbox
+      });
+
+      app.addPage(page1);
+      app.placeAt("content");
+    </script>
+  </head>
+  <body class="sapUiBody">
+    <div id="content"></div>
+  </body>
+</html>
