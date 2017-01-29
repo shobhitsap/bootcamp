@@ -1,0 +1,6 @@
+Name:	FeedbackService
+Type:	HTTP
+Description:Feedback Destination
+URL:https://feedback-i335136trial.hanatrial.ondemand.com:443/api/v2/apps/0b3e049a-4dd9-41c3-b912-acaa599c5f8d/posts
+Proxy Type:Internet
+Authentication:NoAuthentication
